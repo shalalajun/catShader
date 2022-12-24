@@ -17,7 +17,7 @@ export default class Floor
 
     setGeometry()
     {
-        this.geometry = new THREE.CircleGeometry(5, 64)
+        this.geometry = new THREE.CircleGeometry(350, 64)
     }
 
     setTextures()
@@ -38,7 +38,8 @@ export default class Floor
 
     setMaterial()
     {
-        this.material = new THREE.ShadowMaterial({color:0x720000})
+        this.material = new THREE.MeshStandardMaterial({color:0xffffff})
+        //this.material = new THREE.ShadowMaterial({color:0x720000})
         this.material.opacity = 0.4;
     }
 
@@ -46,6 +47,7 @@ export default class Floor
     {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.rotation.x = - Math.PI * 0.5
+        this.mesh.position.set(0,-2,0)
         this.mesh.receiveShadow = true
         this.scene.add(this.mesh)
     }

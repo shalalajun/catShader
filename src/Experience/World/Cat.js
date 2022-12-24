@@ -36,10 +36,11 @@ export default class Cat
     {
         this.model = this.resource.scene
         this.model.scale.set(10, 10, 10)
+        this.model.position.set(0,-2,0)
         this.scene.add(this.model)
         this.catMap = new THREE.MeshStandardMaterial({
             map:this.catTex,
-            roughness: 0.48,
+            roughness: 0.46,
             //metalness: 0.1
         })
 
@@ -89,6 +90,7 @@ export default class Cat
             {
                 child.material = this.catMap
                 child.castShadow = true
+                child.receiveShadow = true
             }
         })
     }
