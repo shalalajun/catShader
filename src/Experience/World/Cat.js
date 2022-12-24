@@ -78,7 +78,18 @@ export default class Cat
                 `
                 #include <output_fragment>
                 vec3 fCol = vec3(1.0,0.0,0.0);
-                gl_FragColor = vec4( outgoingLight, diffuseColor.a );
+                
+                vec3 N = geometry.normal;
+                vec3 L = normalize(directLight.direction);
+                vec3 C = normalize(geometry.viewDir);
+                vec3 H = normalize( directLight.direction + geometry.viewDir );
+
+                float rim = dot(C,N);
+                rim = 1. - rim;
+
+                vec3 rimCol = vec3(1.000,0.785,0.250);
+                
+                gl_FragColor = vec4( outgoingLight + (rimCol*pow(rim, 12.)*0.5), diffuseColor.a );
                 `
             )
 
