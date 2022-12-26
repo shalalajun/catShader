@@ -80,10 +80,13 @@ export default class Cat
     {
       
         this.model = this.resource.scene
+        
         this.model.scale.set(10, 10, 10)
         this.model.position.set(0,-2,0)
+
         this.player.add(this.model)
         this.scene.add(this.player)
+        
         this.catMap = new THREE.MeshStandardMaterial({
             map:this.catTex,
             roughness: 0.46,
@@ -200,9 +203,9 @@ export default class Cat
     {
         this.animation.mixer.update(this.time.delta * 0.001)
         this.addControls()
-        const position = new THREE.Object3D()
-        position.position.copy(this.model.position)
-        console.log(position.position)
+        this.position = new THREE.Object3D()
+        this.position.position.copy(this.model.position)
+        //console.log(position.position)
     // if (this.player.userData!==undefined && this.player.userData.move!==undefined){
     //     this.player.translateZ(this.player.userData.move.forward * dt * 5);
     //     this.player.rotateY(this.player.userData.move.turn * dt);
