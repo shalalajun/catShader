@@ -15,14 +15,16 @@ export default class Environment
         this.sunLight = new THREE.DirectionalLight('#ffffff', 2)
         this.sunLight.castShadow = true
         this.sunLight.shadow.camera.far = 150
-        this.sunLight.shadow.mapSize.set(2048, 2048)
-        this.sunLight.shadow.normalBias = 0.001
-        this.sunLight.shadow.radius = 3
+        this.sunLight.shadow.mapSize.set(4096, 4096)
+        this.sunLight.shadow.normalBias = 0.1
+        this.sunLight.shadow.camera.left = 20;
+        this.sunLight.shadow.camera.right = -20;
        // this.light.position.setFromSphericalCoords(250,phi,theta)
         this.scene.add(this.sunLight)
 
-        const shadowHelper = new THREE.CameraHelper(this.sunLight.shadow.camera)
-        //this.scene.add(shadowHelper)
+        this.shadowHelper = new THREE.CameraHelper(this.sunLight.shadow.camera)
+        //this.scene.add(this.shadowHelper)
+       
         
        
         this.sky = new Sky();
@@ -61,7 +63,7 @@ export default class Environment
             mieCoefficient: 0.1,
             mieDirectionalG: 0.8,
             elevation: 23,
-            azimuth: 38,
+            azimuth: -10.267,
             exposure: this.renderer.toneMappingExposure
         }
       
@@ -110,6 +112,8 @@ export default class Environment
         this.debugFolder2.add( this.effectController, 'azimuth', - 180, 180, 0.001 ).onChange( this.guiChanged );
         this.debugFolder2.add( this.effectController, 'exposure', 0, 2, 0.0001 ).onChange( this.guiChanged );
        
+        this.debugFolder2.add(this.shadowHelper,'visible').name('shadowHelper')
+      
         //console.log(this.effectController.turbidity)
       
         this.guiChanged()

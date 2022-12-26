@@ -7,6 +7,7 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import World from './World/World.js'
 import Resources from './Utils/Resources.js'
+import CharacterControl from './Utils/CharacterControl.js'
 
 import sources from './sources.js'
 
@@ -34,6 +35,7 @@ export default class Experience
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
+        this.characterControl = new CharacterControl()
        // this.scene.background = new THREE.Color(0xf5975e)
         //this.scene.fog = new THREE.FogExp2( 0xdf0ace, 0.039);
         this.resources = new Resources(sources)
@@ -66,8 +68,10 @@ export default class Experience
     update()
     {
         this.camera.update()
+       
         this.world.update()
         this.renderer.update()
+        //this.characterControl.update()
     }
 
     destroy()

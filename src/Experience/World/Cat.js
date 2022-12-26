@@ -1,15 +1,54 @@
+import keyboardState from 'keyboard-state'
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import listen from "key-state";
+
+
 
 export default class Cat
 {
     constructor()
     {
+        this.keys = listen(window,{
+            left: [ "ArrowLeft", "KeyA" ],
+            right: [ "ArrowRight", "KeyD" ],
+            up: [ "ArrowUp", "KeyW" ],
+            down: [ "ArrowDown", "KeyS" ]
+        })
+
+       
+       
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.time = this.experience.time
         this.debug = this.experience.debug
+        this.renderer = this.experience.renderer
+        this.player = new THREE.Group()
+        this.speed = 0.1
+        
+        this.cameras = []
+        
+        this.cameraIndex = 0
+        this.camera = this.experience.camera
+        
+        this.followCam = new THREE.Object3D()
+        this.followCam.position.copy(this.camera.instance.position)
+        
+        this.player.add(this.followCam)
+        this.cameras.push(this.followCam)
+        
+        this.frontCam = new THREE.Object3D()
+        this.frontCam.position.set(0, 3, -8)
+        this.cameras.push(this.frontCam)
+
+        this.overHeadCam = new THREE.Object3D()
+        this.overHeadCam.position.set(0, 20, 0)
+        this.cameras.push(this.overHeadCam)
+
+
+        this.raycaster = new THREE.Raycaster();
+        this.pointer = new THREE.Vector2()
 
         // Debug
         if(this.debug.active)
@@ -18,6 +57,7 @@ export default class Cat
         }
 
         // Resource
+      
         this.resource = this.resources.items.foxModel
         this.catTex = this.resources.items.catTexture
         this.catTex.encoding = THREE.sRGBEncoding;
@@ -28,16 +68,22 @@ export default class Cat
 
         console.log(this.catTex)
 
+        //this.playerControl(forward, turn);
         this.setModel()
+        
+      //  this.addKeyboardControl()
         this.setAnimation()
+      
     }
 
     setModel()
     {
+      
         this.model = this.resource.scene
         this.model.scale.set(10, 10, 10)
         this.model.position.set(0,-2,0)
-        this.scene.add(this.model)
+        this.player.add(this.model)
+        this.scene.add(this.player)
         this.catMap = new THREE.MeshStandardMaterial({
             map:this.catTex,
             roughness: 0.46,
@@ -153,5 +199,107 @@ export default class Cat
     update()
     {
         this.animation.mixer.update(this.time.delta * 0.001)
+        this.addControls()
+        const position = new THREE.Object3D()
+        position.position.copy(this.model.position)
+        console.log(position.position)
+    // if (this.player.userData!==undefined && this.player.userData.move!==undefined){
+    //     this.player.translateZ(this.player.userData.move.forward * dt * 5);
+    //     this.player.rotateY(this.player.userData.move.turn * dt);
+    //     }
     }
+
+    // keyboardControl()
+    // {
+    //     const pos = this.player.position.clone()
+    //     pos.y += 3;
+    //     this.camera.instance.lookAt(pos)
+    //     console.log(this.camera.instance)
+    // }
+
+    addControls()
+    {
+        if(this.keys.up)
+        {
+            this.player.translateZ(this.speed);
+        }
+        if(this.keys.down)
+        {
+            this.player.translateZ(-this.speed);
+        }
+        if(this.keys.left)
+        {
+            this.player.rotateY(this.speed*0.5);
+        }
+        if(this.keys.right)
+        {
+            this.player.rotateY(-this.speed*0.5);
+        }
+    }
+
+    // addKeyboardControl(){
+    //     document.addEventListener( 'keydown', this.keyDown );
+    //     document.addEventListener( 'keyup', this.keyUp );
+
+    //     // window.document.addEventListener( 'keydown', console.log('down') );
+    //     // window.document.addEventListener( 'keyup', console.log('up')  );
+    // }
+
+//     keyDown(evt){
+//         let forward = (this.player.userData!==undefined && this.player.userData.move!==undefined) ? this.player.userData.move.forward : 0;
+//         let turn = (this.player.userData!=undefined && this.player.userData.move!==undefined) ?  this.player.userData.move.turn : 0;
+        
+//         switch(evt.keyCode){
+//           case 87://W
+//             forward = -1;
+//             break;
+//           case 83://S
+//             forward = 1;
+//             break;
+//           case 65://A
+//             turn = 1;
+//             break;
+//           case 68://D
+//             turn = -1;
+//             break;
+//         }
+        
+//         this.playerControl(forward, turn);
+//     }
+
+//     keyUp(evt){
+//         let forward = (this.player.userData!==undefined && this.player.userData.move!==undefined) ? this.player.userData.move.forward : 0;
+//         let turn = (this.player.move!=undefined && this.player.userData.move!==undefined) ?  this.player.userData.move.turn : 0;
+        
+//         switch(evt.keyCode){
+//           case 87://W
+//             forward = 0;
+//             break;
+//           case 83://S
+//             forward = 0;
+//             break;
+//           case 65://A
+//             turn = 0;
+//             break;
+//           case 68://D
+//             turn = 0;
+//             break;
+//         }
+        
+//         this.playerControl(forward, turn);
+//     }
+
+//     playerControl(forward, turn){
+//         if (forward==0 && turn==0){
+//              delete this.player.userData.move;
+//          }else{
+//        if (this.player.userData===undefined) this.player.userData = {};
+//              this.player.userData.move = { forward, turn }; 
+//          }
+//  }
+    
+ 
+        
+
+    
 }

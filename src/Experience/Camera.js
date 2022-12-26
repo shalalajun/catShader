@@ -2,11 +2,13 @@ import * as THREE from 'three'
 import Experience from './Experience.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+
 export default class Camera
 {
     constructor()
     {
         this.experience = new Experience()
+        this.raycaster = new THREE.Raycaster()
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
@@ -17,7 +19,7 @@ export default class Camera
 
     setInstance()
     {
-        this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 20000)
+        this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 10000)
         this.instance.position.set(10, 0, 8)
         this.scene.add(this.instance)
     }
@@ -37,5 +39,7 @@ export default class Camera
     update()
     {
         this.controls.update()
+        
     }
+  
 }
