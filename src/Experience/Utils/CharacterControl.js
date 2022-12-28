@@ -13,7 +13,7 @@ export default class CharacterControl
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.raycaster = new THREE.Raycaster()
-        this.cat = this.experience.world.cat.model
+       // this.cat = this.experience.world.cat.model
         
 
         this.renderer = this.experience.renderer
@@ -24,7 +24,7 @@ export default class CharacterControl
         window.addEventListener("click", ()=>
         {
           
-            this.onClick()
+           // this.onClick()
             console.log(this.cat)
             //this.trigger('click')
         }, false);

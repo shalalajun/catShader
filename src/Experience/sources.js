@@ -31,6 +31,11 @@ export default [
         name: 'treeModel',
         type: 'gltfModel',
         path: 'models/Fox/glTF/land.glb'
+    },
+    {
+        name: 'trainModel',
+        type: 'gltfModel',
+        path: 'models/Fox/glTF/train.glb'
     }
     // {
     //     name: 'catModel',
